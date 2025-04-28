@@ -1,2 +1,3 @@
 # JFWM2025
-JAPANESE FRENCH WEEK ON MECHATRONICS 2025
+
+![Image](https://github.com/user-attachments/assets/cbe8d379-06a1-4e59-abeb-858a9e14c3b7)
