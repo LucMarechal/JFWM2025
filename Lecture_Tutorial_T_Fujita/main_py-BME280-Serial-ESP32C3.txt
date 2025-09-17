@@ -1,0 +1,41 @@
+# main.py (ESP32-C3, MicroPython)
+from machine import Pin, SoftI2C, unique_id
+from time import sleep
+import ubinascii
+
+# ---- BME280 setup ----
+# Adjust the import according to the BME280 driver you are using
+import BME280
+
+SCL = 9
+SDA = 8
+i2c = SoftI2C(scl=Pin(SCL), sda=Pin(SDA))
+bme = BME280.BME280(i2c=i2c)
+
+def to_float(x):
+    """Convert BME280 string values to float (strip units and symbols)."""
+    s = str(x)
+    for k in ("C", "°C", "hPa", "%", " ", ","):
+        s = s.replace(k, "")
+    try:
+        return float(s)
+    except:
+        return float("nan")
+
+# Use unique device ID to generate measurement name
+mac = ubinascii.hexlify(unique_id()).decode().upper()
+measurement = "ble_rssi_" + mac
+
+while True:
+    # Read values from BME280
+    t = to_float(bme.temperature)
+    h = to_float(bme.humidity)
+    p = to_float(bme.pressure)
+
+    # Format line in InfluxDB Line Protocol
+    line = f"{measurement} temp={t},hum={h},press={p}"
+
+    # Print to USB serial (forwarded by host PC)
+    print(line)
+
+    sleep(1)
