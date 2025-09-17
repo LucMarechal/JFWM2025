@@ -1,0 +1,45 @@
+# forward_serial_to_udp_simple.py
+import socket, sys, time
+import serial
+
+# ==== Adjust these settings to your environment ====
+SERIAL_PORT = "COM7"       # Windows → "COM7"
+#SERIAL_PORT = "/dev/ttyACM0"      # Linux
+#SERIAL_PORT = "/dev/tty.usbmodem11101"  # macOS
+
+BAUD = 115200
+UDP_HOST = "iotwork.org"   # InfluxDB server host
+UDP_PORT = 8089            # InfluxDB UDP port
+# ===================================================
+
+# Create UDP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Open serial port
+ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)
+
+print(f"Forwarding {SERIAL_PORT} -> UDP {UDP_HOST}:{UDP_PORT}")
+while True:
+    try:
+        # Read one line from serial (ending with \r\n)
+        line = ser.readline()
+        if not line:
+            continue
+
+        # Decode to string and strip whitespace
+        line = line.decode("utf-8", "ignore").strip()
+        if not line:
+            continue
+
+        # Send over UDP
+        sock.sendto(line.encode("utf-8"), (UDP_HOST, UDP_PORT))
+
+        # Print to console for debugging
+        print(line)
+
+    except KeyboardInterrupt:
+        break  # stop with Ctrl+C
+
+    except Exception as e:
+        print("error:", e, file=sys.stderr)
+        time.sleep(0.5)
