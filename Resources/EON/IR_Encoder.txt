@@ -1,0 +1,14 @@
+
+    Product: Infrared Slotted Speed Sensor Module
+    Working Voltage: 3.3V to 5V DC
+    Output Type: Digital Output (0 or 1)
+    Connector: 4-Pin (2.54mm Pitch)
+    Comparator: LM393
+    Mounting Holes: M2 (15mm apart)
+    Size: 32mm x 14mm (1.26″ x 0.55″)
+    Infrared slotted photoelectric speed sensor
+    LM393 comparator for stable digital output
+    Works with 3.3V to 5V power supply
+    Easy 4-pin connection (VCC, GND, DO, AO – AO not connected)
+    LED indicator shows sensor status (LED off = output HIGH, LED on = output LOW)
+    M2 mounting holes for easy installation
